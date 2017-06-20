@@ -1,5 +1,5 @@
 const express = require('express');
-const resStatus = require('../src');
+const resStatus = require('../lib');
 
 const app = express();
 
@@ -18,6 +18,8 @@ app.use((err, req, res, next)=> {
 	// res has its usual methods
 	// so you can do the usual with err
 	res.end(err.message);
+	// or
+	// res.internalServerError({error:err.message});
 })
 
 app.listen(3000, function() {

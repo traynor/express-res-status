@@ -7,16 +7,18 @@ const resStatus = (req, res, next) => {
 	const http = require('http');
 	const codes = http.STATUS_CODES;
 
-	let methodsList = {};
+	let methodsList = [];
 
 	const setUpMethodsAndCodes = (done) => {
 
 		Object.keys(codes).forEach((key, i, arr) => {
 
-			methodsList[camelCaseString(codes[key])] = {
-				code: key,
-				desc: codes[key]
-			};
+			methodsList.push({
+						[camelCaseString(codes[key])]: {
+							code: key,
+							desc: codes[key]
+						}
+					});
 
 			let statusMethod = camelCaseString(codes[key]);
 

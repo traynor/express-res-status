@@ -10,6 +10,7 @@ const express = require('express');
 const resStatus = require('./..');
 console.log(resStatus)
 let app;
+const methods = require('./methods-list');
 
 describe('resStatus middleware', function() {
 
@@ -25,12 +26,24 @@ describe('resStatus middleware', function() {
 
 		app.use(resStatus);
 
-		app.get('/', function(req, res) {
-			res.ok('ok');
+		// this route is for breaking server
+		// resStatus should pass it to err handler
+		app.get('/err', (req, res, next)=> {
+			// should result in 'Converting circular structure to JSON'
+			res.ok(this);
+		})
+
+		app.all('/:method', function(req, res) {
+			let method = req.params.method;
+			res[method](method);
 		});
-		app.get('/418', function(req, res) {
-			res.imATeapot({msg:'imATeapot'});
-		});
+
+		app.use((err, req, res, next) => {
+			// res has its usual methods
+			// so you can do the usual with err
+			res.internalServerError({error:err.message});
+		})
+
 		app.listen(1337, function() {
 			console.log(`Express server running on ${this.address().port}`);
 			done();
@@ -50,7 +63,7 @@ describe('resStatus middleware', function() {
     });
   });
 
-	describe('upon calling', function() {
+	describe('instance', function() {
 
 		it('should call next() once', function(done) {
 
@@ -76,23 +89,29 @@ describe('resStatus middleware', function() {
 		});
 	});
 
-	describe('calling method', function(done) {
+	describe('new methods', function(done) {
 
-		it('.ok should get 200', function(done) {
-			chai.request(app)
-				.get('/')
-				.end(function(err, res) {
-					res.should.have.status(200);
-					done();
-				});
+		it('should all return correct status and json message', function(done) {
+
+			methods.forEach((method, i, arr) => {
+				chai.request(app)
+					.get('/'+Object.keys(method))
+					.end(function(err, res) {
+						res.should.have.status(Object.values(method)[0].code);
+						res.body.should.be.json;
+					});
+
+					if(i+1 === arr.length) done();
+			})
 		});
-		it('.imATeapot should get 418', function(done) {
-			chai.request(app)
-				.get('/418')
-				.end(function(err, res) {
-					res.should.have.status(418);
-					done();
-				});
+		it('should pass server err via next()', function(done) {
+				chai.request(app)
+					.get('/err')
+					.end(function(err, res) {
+						res.should.have.status(500);
+						expect(JSON.stringify(res.body)).to.include('error');
+						done();
+					});
 		});
 	});
 
