@@ -26,7 +26,7 @@ gulp.task('compile', ['lint'], () => {
 		.pipe(sourcemaps.init())
 		//.pipe(cache('compiling'))
 		.pipe(babel())
-		.pipe(sourcemaps.write('.'))
+		.pipe(sourcemaps.write('.', {includeContent:false, sourceRoot:'../src'}))
 		.pipe(gulp.dest(dest));
 });
 
@@ -44,13 +44,13 @@ gulp.task('develop', function() {
 			// dynamicaly set tasks when onChange triggers
 			tasks: function(changedFiles) {
 				if (changedFiles) {
-					console.log('>>>>changed: ', changedFiles);
+					console.log('>>>>changed file: ', changedFiles);
 					var tasks = ['test'];
-					changedFiles.forEach(function(file) {
-						if (path.dirname(file).indexOf('server') > 0) {
-							tasks.push('compile');
-						}
-					});
+					//changedFiles.forEach(function(file) {
+					//	if (path.dirname(file).indexOf('server') > 0) {
+					//		tasks.push('compile');
+					//	}
+					//});
 					return tasks;
 				} else {
 					// if no changes, nodemon crashes on restart
@@ -73,7 +73,7 @@ gulp.task('develop', function() {
 });
 
 
-gulp.task('test', () => {
+gulp.task('test', ['compile'], () => {
 	return gulp.src([destTest])
 		.pipe(mocha({reporter: 'list'}))
 		.once('error', () => {

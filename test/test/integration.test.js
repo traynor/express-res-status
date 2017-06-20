@@ -8,7 +8,7 @@ const express = require('express');
 //const bodyParser = require('body-parser');
 
 const resStatus = require('./..');
-console.log(resStatus)
+
 let app;
 const methods = require('./methods-list');
 
