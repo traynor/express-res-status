@@ -3,25 +3,35 @@ const resStatus = require('../lib');
 
 const app = express();
 
+// plug-in our middleware before routes
 app.use(resStatus);
 
-app.get('/', function (req, res, next) {
 
-	console.log('teapot', res.imATeapot)
-	res.imATeapot('I\'m a teapot, have some tea... C(_)/¨');
+app.all('/', function(req, res, next) {
+	let status = req.query.status;
+	console.log(res)
+	if(status) {
+		try {
+			res[status]({code: res[status].code, desc: res[status].desc});
+		} catch(err) {
+			err.message = `'${req.query.status}' does not exist`;
+			next(err);
+		}
+	} else {
+		res.imATeapot('I\'m a teapot, have some tea... C(_)/¨');
+	}
 });
-
 
 // you should have err-handler, because `resStatus`
 // will pass it down the stack via `next(err)`
 app.use((err, req, res, next)=> {
 	// res has its usual methods
 	// so you can do the usual with err
-	res.end(err.message);
+	res.internalServerError({error:err.message});
 	// or
-	// res.internalServerError({error:err.message});
+	// res.end(err.message);
 })
 
-app.listen(3000, function() {
-	console.log(`Express server running on ${this.address().port}`);
+app.listen(1337, function() {
+	console.log(`Express example app running on ${this.address().port}.\nEnter '?status=ok' in address to get 'ok' method HTTP response, or any other available method as value of 'status' key`);
 });

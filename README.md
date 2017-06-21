@@ -1,4 +1,4 @@
-
+# express-res-status
 Middleware that extends Express' `res` object by wrapping `res.status().json()` into a semantic method that correspondes to HTTP status code description, which are pulled out from Node.JS' `http` module's `STATUS_CODES`.
 
 so, instead of:
@@ -17,14 +17,13 @@ you'd have:
 
 `res.notFound(errMsg);`
 
-Basically, instead of codes, you use HTTP code description in camelCase format, like so:
+Basically, instead of codes, you use HTTP code's description in camelCase format, like so:
 
 `418 I'm a teapot`
 
 would be:
 
 `res.imATeapot('I\'m a teapot, have some tea... C(_)/¨');`
-
 
 
 Example usage:
@@ -57,19 +56,22 @@ route.route('/some-route')
 
 It only supports `res.json()`, you can still use `res` object's methods in special cases, like err handling.
 
+## res[method]
+
+- `res.resStatusAll` - lists all available methods with code and desc
+- `res.[method].code` - gets methods HTTP code
+- `res.[method].desc` - gets methods HTTP description
+
+example:
+```javascript
+res.resStatusAll; // array with `{method, code, desc}` fromat
+res.ok.code; // 200
+res.ok.desc; // 'OK'
+```
+
+## Example
+
 See also full [full example](example/app.js)
-
-For full list of methods: <https://github.com/nodejs/node/blob/master/lib/_http_server.js#L40-L103>
-
-# Under the hood
-
-It uses Node.JS' built-in module `http`, namely, its `STATUS_CODES` object, from which module creates methods from description property, and assigns(defines, actually) them to `res` object.
-
-Method is a function that takes `data` as an argument, and calls `res.status(status).json(data)` when invoked, so it is fully treated like `res.json()`.
-
-It then passes `res` down the stack by calling `next()`.
-
-If there is an err in the middleware, it will bi passed to the next middleware (`next(err)`), so you should place your err-handler at the end and handle the err.
 
 # run example locally
 just install Express, else is for dev
@@ -79,7 +81,28 @@ gulp build
 npm start
 ```
 
-Visit: <http://localhost:3000>
+Visit: <http://localhost:1337>
+
+Enter `?status=ok`' in address to get `ok` method HTTP response, or any other available method as value of `status` key.
+
+## Methods list
+Besides using `res.resStatusAll`:
+
+For (fresh) full list of methods: <https://github.com/nodejs/node/blob/master/lib/_http_server.js#L40-L103>
+
+# Under the hood
+
+It uses Node.JS' built-in module `http`, namely, its `STATUS_CODES` object, from which it creates methods from description property, and assigns(defines, actually) them to `res` object.
+
+Method is a function that takes `data` as an argument, and calls `res.status(status).json(data)` when invoked, so it is fully treated like `res.json()`.
+
+It then passes `res` down the stack by calling `next()`.
+
+If there is an err in the middleware, it will bi passed to the next middleware (`next(err)`), so you should place your err-handler at the end and handle the err.
+
+> Why `http`?
+
+>`http` exports list in a nice, code-desc format, and presumably it will be mostly maintained, and parsing from other sources could be in some later upgrade
 
 # develop
 ```bash
@@ -89,7 +112,7 @@ gulp
 ```
 # dump of methods list at the time of creating readme
 
-| `res` method] | Code |  Desc |
+| `res`[method] | Code |  Desc |
 |---------------|------|-------|
 |  continue | 100 |Continue |
 |  switchingProtocols | 101 |Switching Protocols |

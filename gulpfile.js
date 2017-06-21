@@ -9,12 +9,13 @@ const path = require('path');
 
 const src = 'src/**/*.js';
 const test = 'test/**/*.js';
+const example = 'example/**/*.js';
 const dest = 'lib';
 
 const destTest = `${dest}/test`;
 
 gulp.task('lint', () => {
-	return gulp.src([src, test])
+	return gulp.src([src, test, example])
 		.pipe(eslint())
 		.pipe(eslint.format());
 });
@@ -23,10 +24,10 @@ gulp.task('compile', ['lint'], () => {
 
 	return gulp.src([src, test])
 		//.pipe(cache('maping'))
-		.pipe(sourcemaps.init())
+		//.pipe(sourcemaps.init())
 		//.pipe(cache('compiling'))
 		.pipe(babel())
-		.pipe(sourcemaps.write('.', {includeContent:false, sourceRoot:'../src'}))
+		//.pipe(sourcemaps.write('.', {includeContent:false, sourceRoot:'../src'}))
 		.pipe(gulp.dest(dest));
 });
 
@@ -39,6 +40,7 @@ gulp.task('develop', function() {
 			// watchlist dirs
 			watch: [
 				src,
+				example,
 				test
 			],
 			// dynamicaly set tasks when onChange triggers

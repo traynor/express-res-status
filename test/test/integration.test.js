@@ -10,7 +10,14 @@ const express = require('express');
 const resStatus = require('./..');
 
 let app;
-const methods = require('./methods-list');
+const codes = require('./../codes');
+const specialCases = [
+	100,
+	101,
+	102,
+	204,
+	304
+];
 
 describe('resStatus middleware', function() {
 
@@ -26,25 +33,23 @@ describe('resStatus middleware', function() {
 
 		app.use(resStatus);
 
+		app.all('/method/:method', function(req, res) {
+			let method = req.params.method;
+			res[method]({code: res[method].code, desc: res[method].desc});
+		});
 		// this route is for breaking server
 		// resStatus should pass it to err handler
 		app.get('/err', (req, res, next)=> {
 			// should result in 'Converting circular structure to JSON'
 			res.ok(this);
 		})
-
-		app.all('/:method', function(req, res) {
-			let method = req.params.method;
-			res[method](method);
-		});
-
 		app.use((err, req, res, next) => {
 			// res has its usual methods
 			// so you can do the usual with err
 			res.internalServerError({error:err.message});
 		})
 
-		app.listen(1337, function() {
+		app.listen(8534, function() {
 			console.log(`Express server running on ${this.address().port}`);
 			done();
 		});
@@ -73,10 +78,18 @@ describe('resStatus middleware', function() {
 			expect(spy).to.have.been.called.once;
 			done();
 		});
-		it('should return modified res object', function(done) {
+		it('should return modified res object with all methods list', function(done) {
 			let res = {};
 			resStatus({}, res, ()=> {
-				expect(res).to.have.property('ok');
+				expect(res).to.have.property('resStatusAll');
+				done();
+			});
+		});
+		it('should have getters for code and desc on res[method]', function(done) {
+			let res = {};
+			resStatus({}, res, ()=> {
+				expect(res.ok).to.have.property('code');
+				expect(res.ok).to.have.property('desc');
 				done();
 			});
 		});
@@ -91,17 +104,20 @@ describe('resStatus middleware', function() {
 
 	describe('new methods', function(done) {
 
-		it('should all return correct status and json message', function(done) {
+		it('should all return correct status and message', function(done) {
 
-			methods.forEach((method, i, arr) => {
-				chai.request(app)
-					.get('/'+Object.keys(method))
-					.end(function(err, res) {
-						res.should.have.status(Object.values(method)[0].code);
-						res.body.should.be.json;
-					});
-
-					if(i+1 === arr.length) done();
+			codes.map((code, i, arr) => {
+				if(specialCases.indexOf(+code.code) < 0) {
+					chai.request(app)
+						.get(`/method/${code.method}`)
+						.end(function(err, res) {
+							res.body.should.be.json;
+							res.should.have.status(code.code);
+							res.body.code.should.equal(code.code);
+							res.body.desc.should.equal(code.desc);
+						});
+						if(i+1 === arr.length) done();
+				}
 			})
 		});
 		it('should pass server err via next()', function(done) {
@@ -113,6 +129,7 @@ describe('resStatus middleware', function() {
 						done();
 					});
 		});
+		it.skip('todo: spec cases');
 	});
 
 });
