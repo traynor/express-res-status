@@ -1,6 +1,7 @@
 {
 	"presets": ["es2015"],
 	"plugins": ["add-module-exports",
+		"source-map-support-for-6",
 		"transform-runtime"
 	]
 }

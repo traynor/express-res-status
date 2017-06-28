@@ -56,15 +56,26 @@ route.route('/some-route')
 
 It only supports `res.json()`, you can still use `res` object's methods in special cases, like err handling.
 
-## res[method]
+## Supporting methods
 
 - `res.resStatusAll` - lists all available methods with code and desc
-- `res.[method].code` - gets methods HTTP code
-- `res.[method].desc` - gets methods HTTP description
+- `res.resStatusCode(code);` - returns code and description for provided code (code param can be `Number` or `String`)
 
 example:
 ```javascript
 res.resStatusAll; // array with `{method, code, desc}` fromat
+res.resStatusCode(400); //{ method: 'badRequest', code: '400', desc: 'Bad Request' }
+// ...and if code is not found...
+res.resStatusCode(1337)) // { error: 'No such code' }
+```
+
+## res[method] supporting methods
+
+- `res.[method].code` - gets specific method's HTTP code
+- `res.[method].desc` - gets specific method's HTTP description
+
+example:
+```javascript
 res.ok.code; // 200
 res.ok.desc; // 'OK'
 ```
@@ -100,9 +111,9 @@ It then passes `res` down the stack by calling `next()`.
 
 If there is an err in the middleware, it will bi passed to the next middleware (`next(err)`), so you should place your err-handler at the end and handle the err.
 
-> Why `http`?
+Why `http`?
 
->`http` exports list in a nice, code-desc format, and presumably it will be mostly maintained, and parsing from other sources could be in some later upgrade
+`http` exports list in a nice, code-desc format, and presumably it will be mostly maintained, and parsing from other sources could be in some later upgrade
 
 # develop
 ```bash

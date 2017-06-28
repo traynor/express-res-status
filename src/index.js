@@ -6,13 +6,41 @@ const resStatus = (req, res, next) => {
 
 		codes.map((code, i, arr) => {
 
-			// attach methods list as getter
+			// first, attach methods list as getter
 			if (i === 0) {
-				Object.defineProperty(res, 'resStatusAll', {
-							get: function() {
-								return codes;
+
+				Object.defineProperties(res, {
+					'resStatusAll': {
+						enumerable: true,
+						configurable: true,
+						get: function() {
+							return codes;
+						}
+					},
+					'resStatusCode': {
+						enumerable: true,
+						configurable: true,
+						value: function(code) {
+
+							// check if code is a string
+							// else, turn code to string
+							code = (typeof code === 'string' || code instanceof String)
+								? code
+								: String(code);
+
+							let result;
+							result = this.resStatusAll.find(object => object.code == code);
+							if(result === undefined) {
+								return {
+									error: 'No such code'
+								};
+							} else {
+								return result;
 							}
-						});
+						},
+						writable: true
+					}
+				});
 			}
 
 			// we shouldn't have same methods
@@ -22,14 +50,15 @@ const resStatus = (req, res, next) => {
 
 			} else {
 
-				// extend res object with new methods
+				// extend res object with new method
+				// list default descriptors for future changes
 				Object.defineProperty(res, code.method, {
 					enumerable: true, // can show in {}.keys()
-					configurable: true, // can delete
+					configurable: true, // can edit and delete
 					value: setResMethod(code.code, code.desc),
 					writable: true // can reassign
 				});
-				// ugly way attach code and desc getters
+				// then, attach method's code and desc getters
 				Object.defineProperties(res[code.method], {
 						'code': {
 						get: function() { return code.code; }

@@ -78,10 +78,18 @@ describe('resStatus middleware', function() {
 			expect(spy).to.have.been.called.once;
 			done();
 		});
-		it('should return modified res object with all methods list', function(done) {
+		it('should throw err if there is already same method name', function(done) {
+			let res = {ok:'not ok'};
+			expect(function() {
+				resStatus({}, res, {});
+			}).to.throw(`'res' already has method 'ok'`);
+			done();
+		});
+		it('should return modified res object with supporting methods list', function(done) {
 			let res = {};
 			resStatus({}, res, ()=> {
 				expect(res).to.have.property('resStatusAll');
+				expect(res).to.have.property('resStatusCode');
 				done();
 			});
 		});
@@ -94,8 +102,10 @@ describe('resStatus middleware', function() {
 			});
 		});
 		it('should have old methods on res object', function(done) {
-			let res = {oldMethod(){}};
-			resStatus({}, res, ()=> {
+			let res = {
+				oldMethod() {}
+			};
+			resStatus({}, res, () => {
 				expect(res).to.have.property('oldMethod');
 				done();
 			});

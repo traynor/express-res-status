@@ -9,12 +9,12 @@ app.use(resStatus);
 
 app.all('/', function(req, res, next) {
 	let status = req.query.status;
-	console.log(res)
+	//console.log(res);
 	if(status) {
 		try {
 			res[status]({code: res[status].code, desc: res[status].desc});
 		} catch(err) {
-			err.message = `'${req.query.status}' does not exist`;
+			err.message = `'${req.query.status}' method/status does not exist`;
 			next(err);
 		}
 	} else {
