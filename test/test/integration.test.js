@@ -139,6 +139,17 @@ describe('resStatus middleware', function() {
 						done();
 					});
 		});
+		it('should allow to be overwritten', function(done) {
+			const ok = () => {};
+			let res = {};
+			resStatus({}, res, () => {
+				res.ok = ok;
+				expect(res).to.have.property('ok');
+				let compare = Object.is(ok, res.ok);
+				expect(compare).to.be.true;
+				done();
+			});
+		});
 		it.skip('todo: spec cases');
 	});
 
