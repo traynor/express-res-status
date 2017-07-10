@@ -9,10 +9,10 @@
   },
   "keywords": [
     "express",
-    "http",
     "router",
+    "http codes",
     "status",
-    "codes"
+    "REST API"
   ],
   "author": "",
   "license": "ISC",
@@ -35,6 +35,7 @@
     "gulp-nodemon": "^2.2.1",
     "gulp-sourcemaps": "^2.6.0",
     "mocha": "^3.4.2",
-    "source-map-support": "^0.4.15"
+    "source-map-support": "^0.4.15",
+    "supertest": "^3.0.0"
   }
 }

@@ -15,14 +15,14 @@ const dest = 'lib';
 const destTest = `${dest}/test`;
 
 gulp.task('lint', () => {
-	return gulp.src([src, test, example])
+	return gulp.src([src, example])
 		.pipe(eslint())
 		.pipe(eslint.format());
 });
 
 gulp.task('compile', ['lint'], () => {
 
-	return gulp.src([src, test])
+	return gulp.src([src])
 		//.pipe(cache('maping'))
 		.pipe(sourcemaps.init())
 		//.pipe(cache('compiling'))
@@ -40,8 +40,7 @@ gulp.task('develop', function() {
 			// watchlist dirs
 			watch: [
 				src,
-				example,
-				test
+				example
 			],
 			// dynamicaly set tasks when onChange triggers
 			tasks: function(changedFiles) {
@@ -76,7 +75,7 @@ gulp.task('develop', function() {
 
 
 gulp.task('test', ['compile'], () => {
-	return gulp.src([destTest])
+	return gulp.src([dest])
 		.pipe(mocha({reporter: 'list'}))
 		.once('error', () => {
 			process.exit(1);

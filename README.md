@@ -121,9 +121,14 @@ npm i
 gulp build
 gulp
 ```
+
+# todo 
+- [] add html and xml handlers
+
+
 # dump of methods list at the time of creating readme
 
-| `res`[method] | Code |  Desc |
+| `res`[method] | Code |  Desc/reason phrase |
 |---------------|------|-------|
 |  continue | 100 |Continue |
 |  switchingProtocols | 101 |Switching Protocols |
