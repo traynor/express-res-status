@@ -7,7 +7,8 @@ const spies = require('chai-spies');
 const express = require('express');
 //const bodyParser = require('body-parser');
 
-const resStatus = require('./..');
+// fire up middleware
+const resStatus = require('./..')();
 
 let app;
 const codes = require('./codes');

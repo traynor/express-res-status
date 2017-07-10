@@ -1,7 +1,7 @@
 {
   "name": "express-res-status",
   "version": "1.0.0",
-  "description": "Express middleware that extends `res.status().json()` with HTTP response status codes as methods",
+  "description": "Use HTTP status code reason phrases as methods for sending response status and body with Express API",
   "main": "lib/index.js",
   "scripts": {
     "test": "gulp test",
