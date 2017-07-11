@@ -1,7 +1,7 @@
 {
   "name": "express-res-status",
   "version": "1.0.0",
-  "description": "Use HTTP status code reason phrases as methods for sending response status and body with Express API",
+  "description": "Use HTTP status code reason phrases as methods for sending response status and body with Express REST API",
   "main": "lib/index.js",
   "scripts": {
     "test": "gulp test",
@@ -10,10 +10,12 @@
   "keywords": [
     "express",
     "router",
-    "http codes",
-    "status",
-    "REST API"
+    "REST API",
+    "http status codes"
   ],
+  "engines": {
+    "node": ">= 0.10.0"
+  },
   "author": "",
   "license": "ISC",
   "devDependencies": {

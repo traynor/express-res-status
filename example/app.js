@@ -4,7 +4,7 @@ const resStatus = require('../lib');
 const app = express();
 
 // plug-in our middleware before routes
-app.use(resStatus('end'));
+app.use(resStatus());
 
 
 app.all('/', function(req, res, next) {
