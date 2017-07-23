@@ -1,8 +1,18 @@
+// disable some eslint stuff here
+/* eslint-disable no-negated-condition */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-invalid-this */
+/* eslint-disable no-empty-function */
+/* eslint-disable no-catch-shadow */
+/* eslint-disable curly */
+
 const chai = require('chai');
 //const agent = require('chai-http');
 const request = require('supertest');
+/* eslint-disable no-unused-vars */
 const should = chai.should();
-const expect =  chai.expect;
+/* eslint-enable no-unused-vars */
+const expect = chai.expect;
 const spies = require('chai-spies');
 const express = require('express');
 //const bodyParser = require('body-parser');
@@ -201,7 +211,7 @@ describe('resStatus middleware', function() {
 		it('should handle special cases', function(done) {
 
 			specialCases.map((code, i, arr) => {
-				if (code.method != 'continue') {
+				if (code.method !== 'continue') {
 					request(app)
 						.get(`/method/${code.method}`)
 						.end(function(err, res) {

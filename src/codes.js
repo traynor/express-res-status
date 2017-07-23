@@ -13,7 +13,7 @@ const camelCaseString = (str) => {
 
 	return str
 		.toLowerCase()
-		.replace(/\'/g, '') // words with ' will be merged
+		.replace(/'/g, '') // words with ' will be merged
 		.replace(/\W/g, ' ') // remove strange chars
 		.split(' ') // split by space
 		.map(function(word, i) {
@@ -29,7 +29,7 @@ const camelCaseString = (str) => {
 }
 
 // crete methods arr
-Object.keys(codes).forEach((key, i, arr) => {
+Object.keys(codes).forEach((key) => {
 
 	methodsList.push({
 		method: camelCaseString(codes[key]),

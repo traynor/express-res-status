@@ -3,7 +3,7 @@ Extends `res` object with semantic method that correspondes to description/messa
 
 # Under the hood
 
-Methods are built a top of Express methods `.json()`, `.send()`, `.end()`, so you can treat them the same.
+Methods are built on top of Express methods `.json()`, `.send()`, `.end()`, so you can treat them the same.
 
 So, invoking a method, e.g  `res.ok(data)`, is the same as doing `res.status(200).json(data)`.
 
@@ -150,9 +150,8 @@ npm start
 
 Visit: <http://localhost:1337>
 
-Enter `?status=ok`' in address to get `ok` method HTTP response, or any other available method as value of `status` key.
+Enter `?status=ok`' or `?status=200` in address bar to get `ok` method HTTP response, or any other available method as value of `status` key, as a string or number.
 
-Also, `?status=200` will work.
 
 ## Methods list
 
@@ -173,6 +172,7 @@ gulp
 - [] add html and xml handlers
 - [] add tests for the rest of end handlers
 - [] handle special cases (like some 1xx, 3xx etc.)
+- [] fix linting
 
 
 # dump of methods list at the time of creating readme
@@ -241,3 +241,6 @@ gulp
 |  res.bandwidthLimitExceeded(); | 509 |Bandwidth Limit Exceeded |
 |  res.notExtended(); | 510 |Not Extended |
 |  res.networkAuthenticationRequired(); | 511 |Network Authentication Required |
+
+# License
+MIT

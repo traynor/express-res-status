@@ -33,5 +33,5 @@ app.use((err, req, res, next)=> {
 })
 
 app.listen(1337, function() {
-	console.log(`Express example app running on ${this.address().port}.\nEnter '?status=ok' in address to get 'ok' method HTTP response, or any other available method as value of 'status' key`);
+	console.log(`Express example app running on ${this.address().port}.\nEnter '?status=ok' or '?status=200' in address bar to get 'ok' method HTTP response, or any other available method as value of 'status' key`);
 });

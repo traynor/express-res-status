@@ -50,12 +50,12 @@ const resStatus = (sendHandler = 'json') => {
 
 								// check if code is a string
 								// else, turn code to string
-								code = (typeof code === 'string' || code instanceof String)
+								code = typeof code === 'string' || code instanceof String
 									? code
 									: String(code);
 
 								let result;
-								result = this.resStatusAll.find(object => object.code == code);
+								result = this.resStatusAll.find(object => object.code === code);
 
 								if (!result) {
 									return {
@@ -130,7 +130,7 @@ const resStatus = (sendHandler = 'json') => {
 			});
 		}
 		// final response handler method
-		const setResMethod = (code, desc) => {
+		const setResMethod = (code) => {
 
 			// all methods can take body/data
 			// let Express handle it for now,
