@@ -7,6 +7,10 @@
     "test": "gulp test",
     "start": "node example/app"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/traynor/express-res-status.git"
+  },
   "keywords": [
     "express",
     "router",
@@ -16,8 +20,8 @@
   "engines": {
     "node": ">= 0.10.0"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "traynor <traynor1@protonmail.com>",
+  "license": "MIT",
   "devDependencies": {
     "babel-eslint": "^7.2.3",
     "babel-plugin-add-module-exports": "^0.2.1",
