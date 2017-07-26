@@ -1,6 +1,6 @@
 {
   "name": "express-res-status",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Use HTTP status code reason phrases as methods for sending response status and body with Express REST API",
   "main": "lib/index.js",
   "scripts": {

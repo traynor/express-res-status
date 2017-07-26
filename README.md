@@ -141,10 +141,9 @@ res.ok.desc; // 'OK'
 See also full [full example](example/app.js)
 
 # run example locally
-just install Express, else is for dev
+
 ```bash
-npm i express
-gulp build
+npm i
 npm start
 ```
 
@@ -163,16 +162,15 @@ For (fresh) full list of methods: <https://github.com/nodejs/node/blob/master/li
 # develop
 ```bash
 npm i
-gulp build
 gulp
 ```
 
 # todo
 
-- [] add html and xml handlers
-- [] add tests for the rest of end handlers
-- [] handle special cases (like some 1xx, 3xx etc.)
-- [] fix linting
+- [ ] add html and xml handlers
+- [ ] add tests for the rest of end handlers
+- [ ] handle special cases (like some 1xx, 3xx etc.)
+- [ ] fix linting
 
 
 # dump of methods list at the time of creating readme
